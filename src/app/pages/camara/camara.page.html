@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Cámara</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="center">
+    <ion-button expand="block" color="secondary" (click)="takePhoto()">Tomar foto</ion-button>
+  </div>
+
+  <img *ngIf="photoPreview" [src]="photoPreview" class="preview">
+<ion-button expand="block" color="tertiary" (click)="takePhoto()">
+  Tomar Foto
+</ion-button>
+
+</ion-content>

@@ -1,37 +1,65 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, createAnimation } from '@ionic/angular';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-register2',
+  templateUrl: './register2.page.html',
+  styleUrls: ['./register2.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, MatFormFieldModule, MatInputModule, MatButtonModule],
-  templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
+  imports: [IonicModule, CommonModule, FormsModule],
 })
-export class RegisterPage implements AfterViewInit {
-  name = '';
+export class Register2Page {
   email = '';
   password = '';
+  confirmPassword = '';
+  errorMsg = '';
 
-  @ViewChild('card', { read: ElementRef }) cardEl!: ElementRef;
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private toastCtrl: ToastController,
+  ) {}
 
-  ngAfterViewInit() {
-    // Simple entrance animation
-    const anim = createAnimation()
-      .addElement(this.cardEl.nativeElement)
-      .duration(500)
-      .fromTo('opacity', '0', '1')
-      .fromTo('transform', 'translateY(12px)', 'translateY(0)');
-    anim.play();
+  async onRegister() {
+    this.errorMsg = '';
+
+    const email = this.email.trim();
+    const pass = this.password.trim();
+    const pass2 = this.confirmPassword.trim();
+
+    if (!email || !pass || !pass2) {
+      this.errorMsg = 'Completa todos los campos.';
+      return;
+    }
+
+    if (pass !== pass2) {
+      this.errorMsg = 'Las contraseñas no coinciden.';
+      return;
+    }
+
+    const ok = await this.auth.register({ email, password: pass });
+
+    if (!ok) {
+      this.errorMsg = 'El correo ya está registrado.';
+      return;
+    }
+
+    const toast = await this.toastCtrl.create({
+      message: 'Registro exitoso',
+      duration: 1200,
+      position: 'bottom',
+      color: 'success',
+    });
+    await toast.present();
+
+    await this.router.navigateByUrl('/login2', { replaceUrl: true });
   }
 
-  submit() {
-    console.log({name: this.name, email: this.email, password: this.password});
-    // Aquí podrías llamar a tu API de registro si corresponde
+  goLogin() {
+    this.router.navigateByUrl('/login2');
   }
 }

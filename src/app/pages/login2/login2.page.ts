@@ -1,42 +1,67 @@
 import { Component } from '@angular/core';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login2',
   standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
-  ],
+  imports: [IonicModule, CommonModule, FormsModule],
   templateUrl: './login2.page.html',
-  styleUrls: ['./login2.page.scss']
+  styleUrls: ['./login2.page.scss'],
 })
 export class Login2Page {
-  email: string = '';
-  password: string = '';
 
-  constructor(private router: Router) {}
+  email = '';
+  password = '';
+  errorMsg = '';
 
-  submit(): void {
-    console.log('Formulario enviado:', this.email, this.password);
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private toastCtrl: ToastController,
+  ) {}
 
-    if (!this.email || !this.password) {
-      alert('Por favor ingresa tu email y contraseña.');
+  async login() {
+    this.errorMsg = '';
+
+    const email = this.email.trim();
+    const pass = this.password.trim();
+
+    if (!email || !pass) {
+      this.errorMsg = 'Completa ambos campos.';
       return;
     }
 
-    alert('¡Felicidades! Inicio de sesión exitoso.');
+    const ok = await this.auth.login(email, pass);
 
-    this.router.navigate(['/home2'], { replaceUrl: true });
+    if (!ok) {
+      this.errorMsg = 'Correo o contraseña incorrectos.';
+      const t = await this.toastCtrl.create({
+        message: this.errorMsg,
+        duration: 1500,
+        position: 'bottom',
+        color: 'danger',
+      });
+      await t.present();
+      return;
+    }
+
+    const t = await this.toastCtrl.create({
+      message: 'Login exitoso',
+      duration: 1000,
+      position: 'bottom',
+      color: 'success',
+    });
+    await t.present();
+
+    // Ir al home y reemplazar el historial para que no pueda volver al login con “atrás”
+    this.router.navigateByUrl('/home2', { replaceUrl: true });
+  }
+
+  goRegister() {
+    this.router.navigateByUrl('/register2');
   }
 }

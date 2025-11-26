@@ -1,1 +1,67 @@
-ion-card { margin-top: 12px; } .w-full{display:block;width:100%;}
+/* Reutiliza exactamente el look del login */
+.login-background {
+  --background: radial-gradient(circle at top left, #4b1fb8, #0a0430);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  width: 92%;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 24px 26px;
+  border-radius: 22px;
+  background: rgba(15, 10, 40, 0.92);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  text-align: center;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  color: white;
+}
+
+.primary-btn {
+  margin-top: 10px;
+  --background: linear-gradient(90deg, #7a3cff, #2aa9ff);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 14px;
+  height: 46px;
+}
+
+.extra-links {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.extra-links .link {
+  color: #cbd6ff;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+.extra-links .link:hover { color: #fff; }

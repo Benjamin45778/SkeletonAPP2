@@ -1,14 +1,14 @@
 services:
   frontend:
     build:
-      context: .                 # el Ionic/Angular está en la raíz
+      context: .                 
       dockerfile: Dockerfile.frontend
     ports:
       - "8080:80"
 
   backend:
     build:
-      context: ./backend         # el backend vive en /backend
+      context: ./backend         
       dockerfile: Dockerfile
     ports:
       - "3000:3000"

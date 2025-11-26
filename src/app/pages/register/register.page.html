@@ -1,15 +1,32 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Crear Cuenta</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="login-background">
+  <div class="login-container">
+    <h1 class="title">Crear cuenta</h1>
+    <p class="subtitle">Completa los datos para registrarte</p>
 
-<ion-content class="ion-padding">
-  <h2>Crear Cuenta Nueva</h2>
+    <div class="card">
+      <ion-item lines="none">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="name"></ion-input>
+      </ion-item>
 
-  <p>Aquí iría un formulario real de registro.</p>
+      <ion-item lines="none">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email"></ion-input>
+      </ion-item>
 
-  <ion-button expand="block" routerLink="/home2" style="margin-block-start:20px">
-    Volver al Inicio
-  </ion-button>
+      <ion-item lines="none">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" class="primary-btn" (click)="onRegister()">
+        REGISTRARME
+      </ion-button>
+
+      <div class="extra-links">
+        <a routerLink="/login2" class="link">Volver al inicio de sesión</a>
+        <a routerLink="/recover" class="link">¿Olvidaste tu contraseña?</a>
+      </div>
+    </div>
+  </div>
 </ion-content>

@@ -1,0 +1,13 @@
+<ion-content class="recover-background">
+  <div class="recover-container">
+    <h1>Recuperar contraseña</h1>
+    <p>Ingresa tu correo para enviarte instrucciones.</p>
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="onRecover()">Enviar</ion-button>
+  </div>
+</ion-content>

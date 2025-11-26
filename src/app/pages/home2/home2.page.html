@@ -1,26 +1,51 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Inicio</ion-title>
+  <ion-toolbar color="dark">
+    <ion-title>Mi App</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Salir</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div class="container-home">
-    <h2 #titleEl style="margin-block-end:20px;font-weight:600">
-      Bienvenido a MuscleMind
-    </h2>
-    <p #descEl style="opacity:.8;margin-block-end:30px">
-      Selecciona una opción para continuar
-    </p>
+<ion-content fullscreen>
 
-    <ion-button #btnCatalog expand="block" routerLink="/catalog" shape="round" fill="solid" type="button">
-      Ver Catálogo
-    </ion-button>
-    <ion-button #btnProfile expand="block" routerLink="/profile" shape="round" fill="outline" type="button">
-      Mi Perfil
-    </ion-button>
-    <ion-button #btnRegister expand="block" routerLink="/register" shape="round" color="secondary" type="button">
-      Crear Cuenta
-    </ion-button>
+  <div class="home-wrapper">
+    <div class="home-card">
+      <h2>¡Bienvenido, {{ email || 'usuario' }}!</h2>
+      <p class="subtitle">
+        Elige una sección para continuar.
+      </p>
+
+      <ion-list lines="none">
+        <ion-item button [routerLink]="['/tasks']">
+          <ion-label>Tareas (API + persistencia)</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/catalog']">
+          <ion-label>Catálogo / Planes</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/mis-datos']">
+          <ion-label>Mis datos</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/experiencia']">
+          <ion-label>Experiencia laboral</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/certificaciones']">
+          <ion-label>Certificaciones</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/camara']">
+          <ion-label>Cámara (plugin)</ion-label>
+        </ion-item>
+
+        <ion-item button [routerLink]="['/mapa']">
+          <ion-label>Mapa / Geolocalización</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
+
 </ion-content>

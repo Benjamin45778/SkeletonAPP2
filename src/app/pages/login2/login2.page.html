@@ -1,38 +1,54 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Iniciar Sesión</ion-title>
+<ion-header translucent="true">
+  <ion-toolbar color="dark">
+    <ion-title>Iniciar sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content fullscreen>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bienvenido</ion-card-title>
-      <ion-card-subtitle>Ingresa tus credenciales</ion-card-subtitle>
-    </ion-card-header>
+  <div class="auth-wrapper">
+    <div class="auth-card">
 
-    <ion-card-content>
+      <h1>Iniciar sesión</h1>
 
-      <form (ngSubmit)="submit()">
+      <ion-input
+        type="email"
+        fill="outline"
+        label="Correo"
+        label-placement="stacked"
+        [(ngModel)]="email">
+      </ion-input>
 
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="email" name="email" type="email" required />
-        </mat-form-field>
+      <ion-input
+        type="password"
+        fill="outline"
+        label="Contraseña"
+        label-placement="stacked"
+        [(ngModel)]="password">
+      </ion-input>
 
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Contraseña</mat-label>
-          <input matInput [(ngModel)]="password" name="password" type="password" required />
-        </mat-form-field>
+      <ion-button
+        expand="block"
+        color="secondary"
+        (click)="login()">
+        INGRESAR
+      </ion-button>
 
-        <button mat-raised-button color="primary" class="full" type="submit">
-          Entrar
-        </button>
+      <ion-text color="danger" *ngIf="errorMsg">
+        <p>{{ errorMsg }}</p>
+      </ion-text>
 
-      </form>
+      <p class="small-text">¿No tienes cuenta?</p>
 
-    </ion-card-content>
-  </ion-card>
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="medium"
+        (click)="goRegister()">
+        CREAR CUENTA
+      </ion-button>
+
+    </div>
+  </div>
 
 </ion-content>

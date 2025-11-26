@@ -1,0 +1,29 @@
+.recover-background {
+  --background: radial-gradient(circle at top left, #4b1fb8, #0a0430);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recover-container {
+  inline-size: 90%;
+  max-inline-size: 420px;
+  margin: 80px auto;
+  padding: 24px 28px;
+  border-radius: 22px;
+  background: rgba(15, 10, 40, 0.9);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+}
+
+ion-item {
+  --background: transparent;
+  margin-block-start: 12px;
+}
+
+ion-button {
+  margin-block-start: 20px;
+  --background: linear-gradient(90deg, #7b2ff7, #1ac3ff);
+  --border-radius: 999px;
+}

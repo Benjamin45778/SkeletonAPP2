@@ -1,0 +1,20 @@
+ion-button {
+  margin-top: 20px;
+  --background: #6a5bff;
+  --color: white;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.preview {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+ion-button {
+  width: 60%;
+  margin: 20px auto;
+}

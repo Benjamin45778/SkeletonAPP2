@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Crear cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="login-box">
+
+    <h1>Crear cuenta</h1>
+
+    <ion-input
+      type="email"
+      placeholder="Correo"
+      [(ngModel)]="email">
+    </ion-input>
+
+    <ion-input
+      type="password"
+      placeholder="Contraseña"
+      [(ngModel)]="password">
+    </ion-input>
+
+    <ion-input
+      type="password"
+      placeholder="Confirmar contraseña"
+      [(ngModel)]="confirmPassword">
+    </ion-input>
+
+    <ion-button
+      expand="block"
+      color="secondary"
+      (click)="onRegister()">
+      CREAR CUENTA
+    </ion-button>
+
+    <ion-text color="danger" *ngIf="errorMsg">
+      <p>{{ errorMsg }}</p>
+    </ion-text>
+
+    <p>¿Ya tienes cuenta?</p>
+
+    <ion-button
+      expand="block"
+      color="medium"
+      (click)="goLogin()">
+      VOLVER A INICIAR SESIÓN
+    </ion-button>
+
+  </div>
+
+</ion-content>

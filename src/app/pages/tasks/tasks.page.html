@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Tareas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+    <ion-input [(ngModel)]="newTitle" placeholder="Nueva tarea"></ion-input>
+    <ion-button color="secondary" (click)="addTask()">Agregar</ion-button>
+  </ion-item>
+
+  <ion-refresher slot="fixed" (ionRefresh)="loadTasks($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>Cargando tareas...</p>
+  </div>
+
+  <ion-text color="danger" *ngIf="errorMsg">
+    <p>{{ errorMsg }}</p>
+    <p>Mostrando datos almacenados si la API no responde.</p>
+  </ion-text>
+
+  <ion-list>
+    <ion-item *ngFor="let t of tasks">
+      <ion-label>{{ t.title }}</ion-label>
+
+      <ion-checkbox
+        slot="end"
+        [checked]="t.done"
+        (ionChange)="toggleDone(t)">
+      </ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
