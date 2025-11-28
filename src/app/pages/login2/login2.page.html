@@ -1,54 +1,46 @@
-<ion-header translucent="true">
+<ion-header>
   <ion-toolbar color="dark">
-    <ion-title>Iniciar sesión</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="login-card">
+      <h2>Ingresa a tu cuenta</h2>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
+      <ion-item>
+        <ion-label position="stacked">Correo electrónico</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="email"
+          placeholder="ejemplo@correo.com">
+        </ion-input>
+      </ion-item>
 
-      <h1>Iniciar sesión</h1>
+      <ion-item>
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input
+          type="password"
+          [(ngModel)]="password"
+          placeholder="Ingresa tu contraseña">
+        </ion-input>
+      </ion-item>
 
-      <ion-input
-        type="email"
-        fill="outline"
-        label="Correo"
-        label-placement="stacked"
-        [(ngModel)]="email">
-      </ion-input>
-
-      <ion-input
-        type="password"
-        fill="outline"
-        label="Contraseña"
-        label-placement="stacked"
-        [(ngModel)]="password">
-      </ion-input>
-
-      <ion-button
-        expand="block"
-        color="secondary"
-        (click)="login()">
-        INGRESAR
+      <ion-button expand="block" class="login-button" (click)="login()">
+        Iniciar sesión
       </ion-button>
 
       <ion-text color="danger" *ngIf="errorMsg">
         <p>{{ errorMsg }}</p>
       </ion-text>
 
-      <p class="small-text">¿No tienes cuenta?</p>
-
-      <ion-button
-        expand="block"
-        fill="outline"
-        color="medium"
-        (click)="goRegister()">
-        CREAR CUENTA
-      </ion-button>
-
+      <div class="register-link">
+        <p>¿No tienes cuenta?</p>
+        <ion-button fill="clear" size="small" (click)="goRegister()">
+          Crear cuenta
+        </ion-button>
+      </div>
     </div>
   </div>
-
 </ion-content>

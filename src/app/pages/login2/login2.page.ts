@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,52 +13,30 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login2.page.scss'],
 })
 export class Login2Page {
-
   email = '';
   password = '';
   errorMsg = '';
 
-  constructor(
-    private router: Router,
-    private auth: AuthService,
-    private toastCtrl: ToastController,
-  ) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
-  async login() {
+  login() {
     this.errorMsg = '';
 
     const email = this.email.trim();
-    const pass = this.password.trim();
+    const password = this.password.trim();
 
-    if (!email || !pass) {
-      this.errorMsg = 'Completa ambos campos.';
+    if (!email || !password) {
+      this.errorMsg = 'Completa correo y contraseña.';
       return;
     }
 
-    const ok = await this.auth.login(email, pass);
-
-    if (!ok) {
-      this.errorMsg = 'Correo o contraseña incorrectos.';
-      const t = await this.toastCtrl.create({
-        message: this.errorMsg,
-        duration: 1500,
-        position: 'bottom',
-        color: 'danger',
-      });
-      await t.present();
-      return;
-    }
-
-    const t = await this.toastCtrl.create({
-      message: 'Login exitoso',
-      duration: 1000,
-      position: 'bottom',
-      color: 'success',
+    this.auth.login(email, password).then((ok) => {
+      if (ok) {
+        this.router.navigateByUrl('/home2', { replaceUrl: true });
+      } else {
+        this.errorMsg = 'Correo o contraseña incorrectos.';
+      }
     });
-    await t.present();
-
-    // Ir al home y reemplazar el historial para que no pueda volver al login con “atrás”
-    this.router.navigateByUrl('/home2', { replaceUrl: true });
   }
 
   goRegister() {

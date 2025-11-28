@@ -5,14 +5,29 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-segment [value]="mode" (ionChange)="changeMode($event)">
+    <ion-segment-button value="capture">
+      <ion-label>Tomar foto</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="gallery">
+      <ion-label>Fotos guardadas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <div class="center">
-    <ion-button expand="block" color="secondary" (click)="takePhoto()">Tomar foto</ion-button>
+  <div *ngIf="mode === 'capture'" class="center">
+    <ion-button expand="block" (click)="takePhoto()">Tomar foto</ion-button>
+    <img *ngIf="photoPreview" [src]="photoPreview" class="preview" />
   </div>
 
-  <img *ngIf="photoPreview" [src]="photoPreview" class="preview">
-<ion-button expand="block" color="tertiary" (click)="takePhoto()">
-  Tomar Foto
-</ion-button>
-
+  <div *ngIf="mode === 'gallery'">
+    <ion-list *ngIf="photos.length > 0">
+      <ion-list-header>Fotos guardadas</ion-list-header>
+      <ion-item *ngFor="let p of photos">
+        <img [src]="p" class="preview" />
+      </ion-item>
+    </ion-list>
+    <p *ngIf="photos.length === 0">
+      No hay fotos guardadas aún.
+    </p>
+  </div>
 </ion-content>

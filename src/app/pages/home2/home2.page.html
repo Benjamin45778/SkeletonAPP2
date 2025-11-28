@@ -2,50 +2,60 @@
   <ion-toolbar color="dark">
     <ion-title>Mi App</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">Salir</ion-button>
+      <ion-button (click)="logout()">SALIR</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-
-  <div class="home-wrapper">
+<ion-content class="ion-padding">
+  <div class="home-container">
     <div class="home-card">
-      <h2>¡Bienvenido, {{ email || 'usuario' }}!</h2>
-      <p class="subtitle">
-        Elige una sección para continuar.
-      </p>
+      <h2>¡Bienvenido, {{ email }}!</h2>
+      <p>Elige una sección para continuar.</p>
 
-      <ion-list lines="none">
-        <ion-item button [routerLink]="['/tasks']">
-          <ion-label>Tareas (API + persistencia)</ion-label>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goTasks()">
+            TAREAS (API + PERSISTENCIA)
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/catalog']">
-          <ion-label>Catálogo / Planes</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goCatalog()">
+            CATÁLOGO / PLANES
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/mis-datos']">
-          <ion-label>Mis datos</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goMisDatos()">
+            MIS DATOS
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/experiencia']">
-          <ion-label>Experiencia laboral</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goExperiencia()">
+            EXPERIENCIA LABORAL
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/certificaciones']">
-          <ion-label>Certificaciones</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goCertificaciones()">
+            CERTIFICACIONES
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/camara']">
-          <ion-label>Cámara (plugin)</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goCamara()">
+            CÁMARA (PLUGIN)
+          </ion-button>
         </ion-item>
 
-        <ion-item button [routerLink]="['/mapa']">
-          <ion-label>Mapa / Geolocalización</ion-label>
+        <ion-item lines="none">
+          <ion-button expand="block" fill="outline" (click)="goMapa()">
+            MAPA / GEOLOCALIZACIÓN
+          </ion-button>
         </ion-item>
       </ion-list>
     </div>
   </div>
-
 </ion-content>
