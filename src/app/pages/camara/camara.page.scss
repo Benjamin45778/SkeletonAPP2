@@ -1,20 +1,172 @@
-ion-button {
-  margin-top: 20px;
-  --background: #6a5bff;
-  --color: white;
+/* Fondo general con más contraste */
+.page {
+  --background: radial-gradient(1200px 800px at 20% 10%, #1a2b6f 0%, #070b1a 55%, #04050d 100%);
+  color: #e9ecff;
 }
 
-.center {
+.topbar {
+  --background: rgba(0, 0, 0, 0.55);
+  --color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.wrap {
+  padding: 18px;
   display: flex;
   justify-content: center;
 }
 
-.preview {
-  width: 100%;
-  margin-top: 20px;
-  border-radius: 10px;
+.card {
+  width: min(980px, 100%);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
 }
-ion-button {
-  width: 60%;
-  margin: 20px auto;
+
+.segment {
+  --background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section {
+  padding: 14px 6px 6px;
+}
+
+h2 {
+  margin: 10px 0 6px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.muted {
+  margin-top: 0;
+  opacity: 0.85;
+}
+
+/* Botón principal con hover elegante (web) */
+.primary-btn {
+  margin-top: 14px;
+  --border-radius: 14px;
+  --background: linear-gradient(90deg, #6a39ff 0%, #1bb8ff 100%);
+  --color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  height: 48px;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.primary-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.08);
+}
+
+/* Grid de miniaturas */
+.grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.thumb {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 10px;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.thumb:hover {
+  transform: translateY(-2px);
+  border-color: rgba(130, 170, 255, 0.45);
+}
+
+.thumbBtn {
+  all: unset;
+  display: block;
+  cursor: pointer;
+}
+
+.thumb img {
+  width: 100%;
+  height: 110px; /* ✅ más pequeño */
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.thumbMeta {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.date {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.danger {
+  --color: #ff6b6b;
+}
+
+/* Modal Zoom */
+.photoModal {
+  --backdrop-opacity: 0.75;
+}
+
+.modalWrap {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.closeX {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.closeX:hover {
+  transform: scale(1.06);
+  filter: brightness(1.1);
+}
+
+.modalCard {
+  width: min(980px, 95vw);
+  height: min(78vh, 680px);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+}
+
+.modalCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ✅ zoom elegante */
+  background: rgba(0, 0, 0, 0.25);
 }

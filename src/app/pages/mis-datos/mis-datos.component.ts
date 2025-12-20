@@ -1,20 +1,37 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 
 @Component({
-  standalone: true,
   selector: 'app-mis-datos',
   templateUrl: './mis-datos.component.html',
   styleUrls: ['./mis-datos.component.scss'],
-  imports: [CommonModule, FormsModule, IonicModule],
+  standalone: true,
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class MisDatosComponent {
-  // Aquí va la info personal que antes ibas a mostrar en Home
-  nombres = '';
-  apellidos = '';
-  correo = '';
-  telefono = '';
-  direccion = '';
+  // Compatibilidad con tu TS anterior (si usabas "nombres")
+  nombres: string = '';
+  correo: string = '';
+  fechaNacimiento: string = '';
+
+  // Para que tu HTML no reviente si usa "nombre"
+  get nombre(): string {
+    return this.nombres;
+  }
+  set nombre(v: string) {
+    this.nombres = v;
+  }
+
+  constructor(private toastCtrl: ToastController) {}
+
+  async guardarCambios() {
+    const toast = await this.toastCtrl.create({
+      message: 'Cambios guardados ✅',
+      duration: 1400,
+      position: 'bottom',
+    });
+    await toast.present();
+  }
 }

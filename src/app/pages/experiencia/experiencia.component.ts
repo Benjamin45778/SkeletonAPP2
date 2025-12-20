@@ -1,19 +1,35 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 
 @Component({
-  standalone: true,
   selector: 'app-experiencia',
   templateUrl: './experiencia.component.html',
   styleUrls: ['./experiencia.component.scss'],
-  imports: [CommonModule, FormsModule, IonicModule],
+  standalone: true,
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class ExperienciaComponent {
-  empresa = '';
+  empresa: string = '';
   anioInicio: number | null = null;
-  trabajaActualmente = false;
+
+  actual: boolean = false;
   anioTermino: number | null = null;
-  cargo = '';
+
+  cargo: string = '';
+
+  constructor(private toastCtrl: ToastController) {}
+
+  async guardar() {
+    // si está "actual", no exigimos año término
+    if (this.actual) this.anioTermino = null;
+
+    const toast = await this.toastCtrl.create({
+      message: 'Experiencia guardada ✅',
+      duration: 1400,
+      position: 'bottom',
+    });
+    await toast.present();
+  }
 }

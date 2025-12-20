@@ -1,81 +1,64 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule, inject } from '@angular/core';
+import { PreloadAllModules, Router, RouterModule, Routes } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+
+const authGuard = async () => {
+  const storage = inject(Storage);
+  const router = inject(Router);
+
+  await storage.create();
+  const token = await storage.get('token');
+
+  if (!token) {
+    router.navigateByUrl('/login2');
+    return false;
+  }
+  return true;
+};
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login2',
-    pathMatch: 'full',
-  },
+  { path: '', redirectTo: 'login2', pathMatch: 'full' },
+
   {
     path: 'login2',
-    loadComponent: () =>
-      import('./pages/login2/login2.page').then((m) => m.Login2Page),
+    loadComponent: () => import('./pages/login2/login2.page').then(m => m.Login2Page),
   },
-  {
-    path: 'register2',
-    loadComponent: () =>
-      import('./pages/register2/register2.page').then((m) => m.Register2Page),
-  },
-  {
-    path: 'recover',
-    loadComponent: () =>
-      import('./pages/recover/recover.page').then((m) => m.RecoverPage),
-  },
+
   {
     path: 'home2',
-    loadComponent: () =>
-      import('./pages/home2/home2.page').then((m) => m.Home2Page),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/home2/home2.page').then(m => m.Home2Page),
   },
+
   {
     path: 'tasks',
-    loadComponent: () =>
-      import('./pages/tasks/tasks.page').then((m) => m.TasksPage),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/tasks/tasks.page').then(m => m.TasksPage),
   },
+
   {
     path: 'catalog',
-    loadComponent: () =>
-      import('./pages/catalog/catalog.page').then((m) => m.CatalogPage),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/catalog/catalog.page').then(m => m.CatalogPage),
   },
-  {
-    path: 'mis-datos',
-    loadComponent: () =>
-      import('./pages/mis-datos/mis-datos.component').then(
-        (m) => m.MisDatosComponent
-      ),
-  },
-  {
-    path: 'experiencia',
-    loadComponent: () =>
-      import('./pages/experiencia/experiencia.component').then(
-        (m) => m.ExperienciaComponent
-      ),
-  },
-  {
-    path: 'certificaciones',
-    loadComponent: () =>
-      import('./pages/certificaciones/certificaciones.component').then(
-        (m) => m.CertificacionesComponent
-      ),
-  },
+
   {
     path: 'camara',
-    loadComponent: () =>
-      import('./pages/camara/camara.page').then((m) => m.CamaraPage),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/camara/camara.page').then(m => m.CamaraPage),
   },
+
   {
     path: 'mapa',
-    loadComponent: () =>
-      import('./pages/mapa/mapa.page').then((m) => m.MapaPage),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/mapa/mapa.page').then(m => m.MapaPage),
   },
-  {
-    path: '**',
-    redirectTo: 'login2',
-  },
+
+  { path: '**', redirectTo: 'login2' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

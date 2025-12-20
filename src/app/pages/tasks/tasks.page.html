@@ -1,40 +1,30 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <ion-title>Tareas</ion-title>
+    <ion-title class="neon-title">Tareas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="app-bg">
+  <div class="page-wrap">
+    <div class="glass-card">
 
-  <ion-item>
-    <ion-input [(ngModel)]="newTitle" placeholder="Nueva tarea"></ion-input>
-    <ion-button color="secondary" (click)="addTask()">Agregar</ion-button>
-  </ion-item>
+      <div class="row">
+        <ion-item class="compact-item" lines="none">
+          <ion-input [(ngModel)]="newTask" placeholder="Nueva tarea"></ion-input>
+        </ion-item>
 
-  <ion-refresher slot="fixed" (ionRefresh)="loadTasks($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+        <ion-button class="neon-btn" (click)="addTask()">Agregar</ion-button>
+      </div>
 
-  <div class="ion-text-center" *ngIf="loading">
-    <ion-spinner></ion-spinner>
-    <p>Cargando tareas...</p>
+      <ion-list class="compact-list" *ngIf="tasks.length > 0">
+        <ion-item *ngFor="let t of tasks" class="compact-item">
+          <ion-label>{{ t }}</ion-label>
+          <ion-button slot="end" class="neon-btn outline" (click)="deleteTask(t)">Eliminar</ion-button>
+        </ion-item>
+      </ion-list>
+
+      <p class="muted" *ngIf="tasks.length === 0">Aún no tienes tareas.</p>
+
+    </div>
   </div>
-
-  <ion-text color="danger" *ngIf="errorMsg">
-    <p>{{ errorMsg }}</p>
-    <p>Mostrando datos almacenados si la API no responde.</p>
-  </ion-text>
-
-  <ion-list>
-    <ion-item *ngFor="let t of tasks">
-      <ion-label>{{ t.title }}</ion-label>
-
-      <ion-checkbox
-        slot="end"
-        [checked]="t.done"
-        (ionChange)="toggleDone(t)">
-      </ion-checkbox>
-    </ion-item>
-  </ion-list>
-
 </ion-content>

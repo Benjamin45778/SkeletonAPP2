@@ -1,38 +1,68 @@
 import { Routes } from '@angular/router';
 
-// Pages / components
-import { Login2Page } from './pages/login2/login2.page';
-import { Register2Page } from './pages/register2/register2.page';
-import { RecoverPage } from './pages/recover/recover.page';
-import { Home2Page } from './pages/home2/home2.page';
-import { TasksPage } from './pages/tasks/tasks.page';
-import { CamaraPage } from './pages/camara/camara.page';
-import { MapaPage } from './pages/mapa/mapa.page';
-import { MisDatosComponent } from './pages/mis-datos/mis-datos.component';
-import { CatalogPage } from './pages/catalog/catalog.page';
-import { ExperienciaComponent } from './pages/experiencia/experiencia.component';
-import { CertificacionesComponent } from './pages/certificaciones/certificaciones.component';
-import { NotFoundPage } from './pages/not-found/not-found.page';
-
 export const routes: Routes = [
   { path: '', redirectTo: 'login2', pathMatch: 'full' },
 
-  // PÚBLICO
-  { path: 'login2', component: Login2Page },
-  { path: 'register2', component: Register2Page },
-  { path: 'recover', component: RecoverPage },
+  // Login / registro
+  {
+    path: 'login2',
+    loadComponent: () =>
+      import('./pages/login2/login2.page').then((m) => m.Login2Page),
+  },
+  {
+    path: 'register2',
+    loadComponent: () =>
+      import('./pages/register2/register2.page').then((m) => m.Register2Page),
+  },
 
-  // PRIVADO (verificación se hace dentro de Home2)
-  { path: 'home2', component: Home2Page },
-  { path: 'tasks', component: TasksPage },
-  { path: 'camara', component: CamaraPage },
-  { path: 'mapa', component: MapaPage },
-  { path: 'mis-datos', component: MisDatosComponent },
-  { path: 'catalog', component: CatalogPage },
-  { path: 'experiencia', component: ExperienciaComponent },
-  { path: 'certificaciones', component: CertificacionesComponent },
+  // Home
+  {
+    path: 'home2',
+    loadComponent: () =>
+      import('./pages/home2/home2.page').then((m) => m.Home2Page),
+  },
 
-  // 404
-  { path: '404', component: NotFoundPage },
-  { path: '**', redirectTo: '404' },
+  // Rutas del menú de Home2
+  {
+    path: 'mis-datos',
+    loadComponent: () =>
+      import('./pages/mis-datos/mis-datos.component').then((m) => m.MisDatosComponent),
+  },
+  {
+    path: 'experiencia',
+    loadComponent: () =>
+      import('./pages/experiencia/experiencia.component').then((m) => m.ExperienciaComponent),
+  },
+  {
+    path: 'certificaciones',
+    loadComponent: () =>
+      import('./pages/certificaciones/certificaciones.component').then((m) => m.CertificacionesComponent),
+  },
+  {
+    path: 'camara',
+    loadComponent: () =>
+      import('./pages/camara/camara.page').then((m) => m.CamaraPage),
+  },
+  {
+    path: 'mapa',
+    loadComponent: () =>
+      import('./pages/mapa/mapa.page').then((m) => m.MapaPage),
+  },
+  {
+    path: 'tasks',
+    loadComponent: () =>
+      import('./pages/tasks/tasks.page').then((m) => m.TasksPage),
+  },
+  {
+    path: 'catalog',
+    loadComponent: () =>
+      import('./pages/catalog/catalog.page').then((m) => m.CatalogPage),
+  },
+
+  
+{
+  path: '**',
+  loadComponent: () =>
+    import('./pages/not-found/not-found.page').then((m) => m.NotFoundPage),
+},
 ];

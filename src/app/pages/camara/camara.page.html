@@ -1,33 +1,71 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar class="topbar">
     <ion-title>Cámara</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-segment [value]="mode" (ionChange)="changeMode($event)">
-    <ion-segment-button value="capture">
-      <ion-label>Tomar foto</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="gallery">
-      <ion-label>Fotos guardadas</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+<ion-content class="page">
+  <div class="wrap">
+    <div class="card">
+      <ion-segment
+        [value]="segment"
+        (ionChange)="setSegment($event.detail.value)"
+        class="segment"
+      >
+        <ion-segment-button value="tomar">
+          <ion-label>TOMAR FOTO</ion-label>
+        </ion-segment-button>
 
-  <div *ngIf="mode === 'capture'" class="center">
-    <ion-button expand="block" (click)="takePhoto()">Tomar foto</ion-button>
-    <img *ngIf="photoPreview" [src]="photoPreview" class="preview" />
+        <ion-segment-button value="guardadas">
+          <ion-label>FOTOS GUARDADAS</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- TOMAR -->
+      <div *ngIf="segment === 'tomar'" class="section">
+        <h2>Captura una foto</h2>
+        <p class="muted">Usa la cámara o selecciona desde tu galería.</p>
+
+        <ion-button class="primary-btn" expand="block" (click)="tomarOSeleccionarFoto()">
+          TOMAR / SELECCIONAR FOTO
+        </ion-button>
+      </div>
+
+      <!-- GUARDADAS -->
+      <div *ngIf="segment === 'guardadas'" class="section">
+        <h2>Fotos guardadas</h2>
+        <p class="muted" *ngIf="fotosGuardadas.length === 0">
+          Aún no tienes fotos. Vuelve a “Tomar Foto” y agrega una.
+        </p>
+
+        <div class="grid" *ngIf="fotosGuardadas.length > 0">
+          <div class="thumb" *ngFor="let f of fotosGuardadas; let i = index">
+            <button class="thumbBtn" (click)="abrirModal(f)">
+              <img [src]="f.webPath" alt="Foto guardada" />
+            </button>
+
+            <div class="thumbMeta">
+              <span class="date">{{ f.savedAt }}</span>
+              <ion-button fill="clear" size="small" class="danger" (click)="eliminarFoto(i)">
+                Eliminar
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="mode === 'gallery'">
-    <ion-list *ngIf="photos.length > 0">
-      <ion-list-header>Fotos guardadas</ion-list-header>
-      <ion-item *ngFor="let p of photos">
-        <img [src]="p" class="preview" />
-      </ion-item>
-    </ion-list>
-    <p *ngIf="photos.length === 0">
-      No hay fotos guardadas aún.
-    </p>
-  </div>
+  <!-- MODAL ZOOM -->
+  <ion-modal [isOpen]="modalOpen" (didDismiss)="cerrarModal()" class="photoModal">
+    <ng-template>
+      <div class="modalWrap">
+        <button class="closeX" (click)="cerrarModal()">✕</button>
+
+        <div class="modalCard">
+          <img [src]="selectedPhoto?.webPath" alt="Foto ampliada" />
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>

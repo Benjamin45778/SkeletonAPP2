@@ -1,26 +1,22 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { CanActivate, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
+  private ready: Promise<void>;
 
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private storage: Storage, private router: Router) {
+    this.ready = this.storage.create().then(() => undefined);
+  }
 
-  async canActivate(): Promise<boolean | UrlTree> {
-    // Preguntamos a Storage si hay sesión activa
-    const isLogged = await this.auth.isLoggedInAsync();
-
-    if (isLogged) {
-      return true;
+  async canActivate(): Promise<boolean> {
+    await this.ready;
+    const token = await this.storage.get('token');
+    if (!token) {
+      this.router.navigateByUrl('/login2');
+      return false;
     }
-
-    // Si no hay sesión, redirigimos al login
-    return this.router.parseUrl('/login2');
+    return true;
   }
 }

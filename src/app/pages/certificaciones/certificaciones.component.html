@@ -1,27 +1,39 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Certificaciones</ion-card-title>
-  </ion-card-header>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Certificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-card-content>
-    <ion-item>
-      <ion-label position="floating">Nombre certificado</ion-label>
-      <ion-input [(ngModel)]="nombreCertificado"></ion-input>
-    </ion-item>
+<ion-content class="app-bg">
+  <div class="page-wrap">
+    <div class="page-card">
+      <h2 class="page-title">Certificaciones</h2>
+      <p class="page-subtitle">Agrega y muestra tus certificaciones.</p>
 
-    <ion-item>
-      <ion-label position="floating">Fecha obtención</ion-label>
-      <ion-datetime presentation="date" [(ngModel)]="fechaObtencion"></ion-datetime>
-    </ion-item>
+      <ion-item class="compact-item">
+        <ion-label position="stacked">Nombre certificación</ion-label>
+        <ion-input [(ngModel)]="certNombre"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>¿Tiene vencimiento?</ion-label>
-      <ion-toggle [(ngModel)]="tieneVencimiento"></ion-toggle>
-    </ion-item>
+      <ion-item class="compact-item">
+        <ion-label position="stacked">Institución</ion-label>
+        <ion-input [(ngModel)]="certInstitucion"></ion-input>
+      </ion-item>
 
-    <ion-item *ngIf="tieneVencimiento">
-      <ion-label position="floating">Fecha vencimiento</ion-label>
-      <ion-datetime presentation="date" [(ngModel)]="fechaVencimiento"></ion-datetime>
-    </ion-item>
-  </ion-card-content>
-</ion-card>
+      <ion-button expand="block" class="neon-btn" (click)="agregarCertificacion()">
+        Agregar
+      </ion-button>
+
+      <ion-list class="compact-list" *ngIf="certificaciones && certificaciones.length > 0">
+        <ion-item *ngFor="let c of certificaciones">
+          <ion-label>
+            <h3 style="margin:0; color: rgba(255,255,255,.92)">{{ c?.nombre ?? c?.title ?? 'Certificación' }}</h3>
+            <p style="margin:6px 0 0 0; color: rgba(255,255,255,.68)">
+              {{ c?.institucion ?? c?.entidad ?? c?.organizacion ?? c?.issuer ?? '—' }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

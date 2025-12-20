@@ -1,30 +1,74 @@
-import { Component, AfterViewInit, ElementRef } from '@angular/core';
-import { IonicModule, createAnimation } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+
+type Plan = {
+  id?: number;
+  nombre?: string;
+  name?: string;
+  descripcion?: string;
+  description?: string;
+  precio?: number;
+  price?: number;
+};
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterLink],
+  imports: [IonicModule, CommonModule],
   templateUrl: './catalog.page.html',
-  styleUrls: ['./catalog.page.scss']
+  styleUrls: ['./catalog.page.scss'],
 })
-export class CatalogPage implements AfterViewInit {
+export class CatalogPage implements OnInit {
+  
+  planes: Plan[] = [];
 
-  constructor(private host: ElementRef<HTMLElement>) {}
+  constructor(private storage: Storage, private toastCtrl: ToastController) {}
 
-  ngAfterViewInit() {
-    const cards = this.host.nativeElement.querySelectorAll('.plan-card');
-    cards.forEach((el, i) => {
-      createAnimation()
-        .addElement(el as HTMLElement)
-        .duration(350)
-        .delay(80 * i) // stagger
-        .easing('cubic-bezier(0.22, 1, 0.36, 1)')
-        .fromTo('opacity', '0', '1')
-        .fromTo('transform', 'translateY(10px)', 'translateY(0)')
-        .play();
+  async ngOnInit() {
+    await this.storage.create();
+
+    // si ya existía cache antiguo lo usamos
+    const cached = await this.storage.get('planes_cache');
+    if (cached?.length) {
+      this.planes = cached;
+      return;
+    }
+
+    
+    this.planes = [
+      {
+        id: 1,
+        nombre: 'Plan Básico',
+        descripcion: 'Acceso estándar y funciones esenciales.',
+        precio: 9990,
+      },
+      {
+        id: 2,
+        nombre: 'Plan Pro',
+        descripcion: 'Mejor rendimiento, más opciones y soporte.',
+        precio: 12990,
+      },
+      {
+        id: 3,
+        nombre: 'Plan Premium',
+        descripcion: 'Todo incluido: máxima experiencia.',
+        precio: 15990,
+      },
+    ];
+
+    await this.storage.set('planes_cache', this.planes);
+  }
+
+  
+  async seleccionarPlan(p: Plan) {
+    await this.storage.set('plan_seleccionado', p);
+
+    const toast = await this.toastCtrl.create({
+      message: `Plan seleccionado: ${p.nombre ?? p.name ?? 'Plan'}`,
+      duration: 1500,
     });
+    await toast.present();
   }
 }

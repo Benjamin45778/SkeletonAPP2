@@ -1,0 +1,23 @@
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  private ready: Promise<void>;
+
+  constructor(private storage: Storage, private router: Router) {
+    this.ready = this.storage.create().then(() => undefined);
+  }
+
+  async canActivate(): Promise<boolean> {
+    await this.ready;
+    const token = await this.storage.get('token');
+    if (!token) {
+      // ajusta a tu ruta real de login (login2 o login)
+      this.router.navigateByUrl('/login2');
+      return false;
+    }
+    return true;
+  }
+}

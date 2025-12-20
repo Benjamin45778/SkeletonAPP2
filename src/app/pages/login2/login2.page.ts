@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { createAnimation } from '@ionic/angular';
 
 @Component({
   selector: 'app-login2',
@@ -13,30 +13,36 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login2.page.scss'],
 })
 export class Login2Page {
+  @ViewChild('loginCard', { read: ElementRef }) loginCard!: ElementRef;
+
   email = '';
   password = '';
   errorMsg = '';
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router) {}
+
+  ionViewDidEnter() {
+    const el = this.loginCard?.nativeElement;
+    if (!el) return;
+
+    createAnimation()
+      .addElement(el)
+      .duration(500)
+      .easing('cubic-bezier(0.2, 0.8, 0.2, 1)')
+      .fromTo('opacity', '0', '1')
+      .fromTo('transform', 'translateY(14px)', 'translateY(0px)')
+      .play();
+  }
 
   login() {
     this.errorMsg = '';
 
-    const email = this.email.trim();
-    const password = this.password.trim();
-
-    if (!email || !password) {
-      this.errorMsg = 'Completa correo y contraseña.';
+    if (!this.email || !this.password) {
+      this.errorMsg = 'Completa correo y contraseña';
       return;
     }
 
-    this.auth.login(email, password).then((ok) => {
-      if (ok) {
-        this.router.navigateByUrl('/home2', { replaceUrl: true });
-      } else {
-        this.errorMsg = 'Correo o contraseña incorrectos.';
-      }
-    });
+    this.router.navigateByUrl('/home2');
   }
 
   goRegister() {

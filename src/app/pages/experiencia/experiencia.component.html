@@ -1,32 +1,43 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Experiencia Laboral</ion-card-title>
-  </ion-card-header>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Experiencia Laboral</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-card-content>
-    <ion-item>
-      <ion-label position="floating">Empresa</ion-label>
-      <ion-input [(ngModel)]="empresa"></ion-input>
-    </ion-item>
+<ion-content class="app-bg">
+  <div class="page-wrap">
+    <div class="page-card">
+      <h2 class="page-title">Experiencia</h2>
+      <p class="page-subtitle">Registra información laboral.</p>
 
-    <ion-item>
-      <ion-label position="floating">Año inicio</ion-label>
-      <ion-input type="number" [(ngModel)]="anioInicio"></ion-input>
-    </ion-item>
+      <ion-item class="compact-item">
+        <ion-label position="stacked">Empresa</ion-label>
+        <ion-input [(ngModel)]="empresa"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>¿Trabaja actualmente ahí?</ion-label>
-      <ion-toggle [(ngModel)]="trabajaActualmente"></ion-toggle>
-    </ion-item>
+      <ion-item class="compact-item">
+        <ion-label position="stacked">Año inicio</ion-label>
+        <ion-input [(ngModel)]="anioInicio" type="number"></ion-input>
+      </ion-item>
 
-    <ion-item *ngIf="!trabajaActualmente">
-      <ion-label position="floating">Año término</ion-label>
-      <ion-input type="number" [(ngModel)]="anioTermino"></ion-input>
-    </ion-item>
+      <ion-item class="compact-item">
+        <ion-label>¿Trabaja actualmente ahí?</ion-label>
+        <ion-toggle [(ngModel)]="actual"></ion-toggle>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Cargo</ion-label>
-      <ion-input [(ngModel)]="cargo"></ion-input>
-    </ion-item>
-  </ion-card-content>
-</ion-card>
+      <ion-item class="compact-item" *ngIf="!actual">
+        <ion-label position="stacked">Año término</ion-label>
+        <ion-input [(ngModel)]="anioTermino" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item class="compact-item">
+        <ion-label position="stacked">Cargo</ion-label>
+        <ion-input [(ngModel)]="cargo"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" class="neon-btn compact-footer-btn" (click)="guardar()">
+        Guardar
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

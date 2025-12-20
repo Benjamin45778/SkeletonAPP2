@@ -1,90 +1,97 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FakeApiService, Task } from '../../services/fake-api.service';
+import { Storage } from '@ionic/storage-angular';
+import { ApiService } from '../../services/fake-api.service';
+
+type TaskItem = { id: number; title: string; completed?: boolean };
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
   templateUrl: './tasks.page.html',
-  styleUrls: ['./tasks.page.scss']
+  styleUrls: ['./tasks.page.scss'],
 })
 export class TasksPage implements OnInit {
-
-  tasks: Task[] = [];
-  newTitle = '';
+  tasks: TaskItem[] = [];
   loading = false;
-  errorMsg = '';
 
-  constructor(private api: FakeApiService) {}
+  
+  newTask = '';
 
-  ngOnInit() {
-    this.loadTasks();
+  constructor(
+    private api: ApiService,
+    private storage: Storage,
+    private toastCtrl: ToastController
+  ) {}
+
+  async ngOnInit() {
+    await this.storage.create();
+    await this.load();
   }
 
-  loadTasks(event?: any) {
+  async load(event?: any) {
     this.loading = true;
-    this.errorMsg = '';
 
-    this.api.getTasks().subscribe({
-      next: (tasks) => {
-        this.tasks = tasks;
-        this.loading = false;
-        if (event) {
-          event.target.complete();
-        }
-      },
-      error: (err: any) => {
-        this.errorMsg = String(err);
-        this.loading = false;
-        if (event) {
-          event.target.complete();
-        }
-      }
-    });
+    try {
+      // tu servicio devuelve Promise → await
+      const data: any = await this.api.getTasks();
+
+      const normalized: TaskItem[] = (data ?? []).map((x: any, i: number) => {
+        if (typeof x === 'string') return { id: i + 1, title: x };
+        return {
+          id: Number(x.id ?? i + 1),
+          title: String(x.title ?? x.nombre ?? 'Tarea'),
+          completed: Boolean(x.completed ?? false),
+        };
+      });
+
+      this.tasks = normalized;
+      await this.storage.set('tasks_cache', normalized);
+    } catch {
+      // fallback offline
+      this.tasks = (await this.storage.get('tasks_cache')) ?? [];
+
+      const t = await this.toastCtrl.create({
+        message: 'Sin internet: mostrando datos guardados (cache).',
+        duration: 2000,
+      });
+      await t.present();
+    } finally {
+      this.loading = false;
+      event?.target?.complete?.();
+    }
   }
 
-  addTask() {
-    if (!this.newTitle.trim()) return;
+  
+  async addTask() {
+    const text = this.newTask.trim();
+    if (!text) return;
 
-    const task: Task = { title: this.newTitle.trim(), done: false };
+    const nextId = this.tasks.length ? Math.max(...this.tasks.map(t => t.id)) + 1 : 1;
+    this.tasks.unshift({ id: nextId, title: text, completed: false });
+    this.newTask = '';
 
-    this.api.addTask(task).subscribe({
-      next: () => {
-        this.newTitle = '';
-        this.loadTasks();
-      },
-      error: (err: any) => {
-        this.errorMsg = String(err);
-      }
+    await this.storage.set('tasks_cache', this.tasks);
+
+    const t = await this.toastCtrl.create({
+      message: 'Tarea agregada (guardada en cache).',
+      duration: 1200,
     });
+    await t.present();
   }
 
-  toggleDone(t: Task) {
-    const updated: Task = { ...t, done: !t.done };
+  
+  async deleteTask(t: TaskItem) {
+    this.tasks = this.tasks.filter(x => x.id !== t.id);
+    await this.storage.set('tasks_cache', this.tasks);
 
-    this.api.updateTask(updated).subscribe({
-      next: () => {
-        t.done = !t.done;
-      },
-      error: (err: any) => {
-        this.errorMsg = String(err);
-      }
+    const toast = await this.toastCtrl.create({
+      message: 'Tarea eliminada.',
+      duration: 1200,
     });
-  }
-
-  deleteTask(t: Task) {
-    if (!t.id) return;
-
-    this.api.deleteTask(t.id).subscribe({
-      next: () => {
-        this.tasks = this.tasks.filter(x => x.id !== t.id);
-      },
-      error: (err: any) => {
-        this.errorMsg = String(err);
-      }
-    });
+    await toast.present();
   }
 }

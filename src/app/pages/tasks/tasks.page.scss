@@ -1,0 +1,25 @@
+@import '../home2/home2.page.scss';
+
+.row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.compact-item {
+  --background: rgba(255, 255, 255, 0.04);
+  --border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.compact-list {
+  margin-top: 12px;
+  background: transparent;
+}
+
+.muted {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.65);
+}

@@ -1,24 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-
 import { ExperienciaComponent } from './experiencia.component';
 
 describe('ExperienciaComponent', () => {
-  let component: ExperienciaComponent;
-  let fixture: ComponentFixture<ExperienciaComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ExperienciaComponent ],
-      imports: [IonicModule.forRoot()]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [IonicModule.forRoot(), ExperienciaComponent]
     }).compileComponents();
-
-    fixture = TestBed.createComponent(ExperienciaComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(ExperienciaComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });

@@ -10,71 +10,60 @@ export interface StoredUser {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
+  private storageReady: Promise<Storage>;
   private email = '';
-  private storageReady: Promise<void>;
 
   constructor(private storage: Storage) {
-    this.storageReady = this.initStorage();
+    this.storageReady = this.storage.create();
   }
 
-  private async initStorage() {
-    await this.storage.create();
-    const session = await this.storage.get(STORAGE_SESSION);
-    if (session?.email && session.loggedIn) {
-      this.email = session.email;
+  private async ensureReady(): Promise<Storage> {
+    return this.storageReady;
+  }
+
+  private async getStoredUser(): Promise<StoredUser | null> {
+    await this.ensureReady();
+    const user = await this.storage.get(STORAGE_USER);
+    return user ?? null;
+  }
+
+  async register(
+    email: string | { email: string; password: string },
+    password?: string
+  ): Promise<boolean> {
+    await this.ensureReady();
+
+    let user: StoredUser;
+
+    if (typeof email === 'string') {
+      if (!password) {
+        throw new Error('Password requerido');
+      }
+      user = { email, password };
+    } else {
+      user = { email: email.email, password: email.password };
     }
-  }
 
-  getEmail(): string {
-    return this.email;
-  }
-
-  async isLoggedInAsync(): Promise<boolean> {
-    await this.storageReady;
-    const session = await this.storage.get(STORAGE_SESSION);
-    return !!session?.loggedIn;
-  }
-
-  async register(data: { email: string; password: string }): Promise<boolean> {
-    await this.storageReady;
-
-    const existing: StoredUser | null = await this.storage.get(STORAGE_USER);
-    if (existing && existing.email === data.email) {
-      // ya existe
-      return false;
-    }
-
-    await this.storage.set(STORAGE_USER, {
-      email: data.email,
-      password: data.password,
-    } as StoredUser);
-
-    // Dejar logeado después del registro
-    this.email = data.email;
-    await this.storage.set(STORAGE_SESSION, {
-      email: data.email,
-      loggedIn: true,
-    });
-
+    await this.storage.set(STORAGE_USER, user);
     return true;
   }
 
   async login(email: string, password: string): Promise<boolean> {
-    await this.storageReady;
+    await this.ensureReady();
+    const stored = await this.getStoredUser();
 
-    const user: StoredUser | null = await this.storage.get(STORAGE_USER);
-    if (!user) return false;
-
-    const ok = user.email === email && user.password === password;
+    const ok =
+      !!stored &&
+      stored.email === email.trim() &&
+      stored.password === password.trim();
 
     if (ok) {
-      this.email = email;
+      this.email = stored.email;
       await this.storage.set(STORAGE_SESSION, {
-        email,
+        email: stored.email,
         loggedIn: true,
       });
     }
@@ -82,8 +71,22 @@ export class AuthService {
     return ok;
   }
 
+  async isLoggedInAsync(): Promise<boolean> {
+    await this.ensureReady();
+    const session = await this.storage.get(STORAGE_SESSION);
+    return !!(session && session.loggedIn);
+  }
+
+  get currentEmail(): string {
+    return this.email;
+  }
+
+  getEmail(): string | null {
+    return this.email || null;
+  }
+
   async logout(): Promise<void> {
-    await this.storageReady;
+    await this.ensureReady();
     this.email = '';
     await this.storage.remove(STORAGE_SESSION);
   }

@@ -1,26 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Catálogo</ion-title>
+  <ion-toolbar color="dark">
+    <ion-title>Catálogo / Planes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <h2 style="margin-block-end:16px">Planes Disponibles</h2>
+<ion-content class="app-bg">
+  <div class="page-wrap">
+    <div class="page-card">
+      <h2 class="page-title">Planes disponibles</h2>
+      <p class="page-subtitle">Selecciona un plan del catálogo.</p>
 
-  <div class="plan-card">
-    <h3>Plan Básico</h3>
-    <p>Ideal para empezar</p>
+      <ion-list class="compact-list">
+        <ion-item *ngFor="let p of planes">
+          <ion-label>
+            <h3 style="margin:0; color: rgba(255,255,255,.92)">{{ p?.nombre ?? p?.name ?? 'Plan' }}</h3>
+            <p style="margin:6px 0 0 0; color: rgba(255,255,255,.68)">{{ p?.descripcion ?? p?.description ?? '' }}</p>
+          </ion-label>
+          <ion-button slot="end" class="neon-btn outline" (click)="seleccionarPlan(p)">Elegir</ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
-
-  <div class="plan-card">
-    <h3>Plan Pro</h3>
-    <p>Para usuarios activos</p>
-  </div>
-
-  <div class="plan-card">
-    <h3>Plan Elite</h3>
-    <p>Todo ilimitado</p>
-  </div>
-
-  <ion-button routerLink="/home2">Volver al Inicio</ion-button>
 </ion-content>
